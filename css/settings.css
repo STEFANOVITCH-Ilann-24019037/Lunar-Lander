@@ -1,0 +1,180 @@
+/* ── Settings Toggle Button ──────────────────────────────────────────────────── */
+#settings-btn {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  background: rgba(100, 180, 255, 0.07);
+  border: 1px solid rgba(100, 180, 255, 0.3);
+  border-radius: 6px;
+  color: rgba(160, 210, 255, 0.8);
+  font-size: 17px;
+  line-height: 1;
+  cursor: pointer;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
+}
+
+#settings-btn:hover {
+  background: rgba(100, 180, 255, 0.18);
+  border-color: rgba(150, 220, 255, 0.8);
+  color: #fff;
+}
+
+/* ── Settings Modal Backdrop ─────────────────────────────────────────────────── */
+#settings-modal {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 5, 20, 0.88);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  backdrop-filter: blur(4px);
+  z-index: 40;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+
+#settings-modal.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+/* ── Settings Panel ──────────────────────────────────────────────────────────── */
+#settings-panel {
+  background: rgba(8, 18, 38, 0.95);
+  border: 1px solid rgba(100, 180, 255, 0.25);
+  border-radius: 8px;
+  padding: 28px 32px;
+  min-width: 360px;
+  color: #c8e6ff;
+  box-shadow: 0 0 40px rgba(60, 140, 255, 0.15);
+}
+
+#settings-panel h2 {
+  font-size: 20px;
+  letter-spacing: 5px;
+  color: #ffffff;
+  text-align: center;
+  margin-bottom: 10px;
+  text-shadow: 0 0 14px rgba(100, 200, 255, 0.6);
+}
+
+.settings-subtitle {
+  font-size: 11px;
+  color: rgba(160, 210, 255, 0.55);
+  text-align: center;
+  line-height: 1.6;
+  margin-bottom: 22px;
+}
+
+.settings-subtitle kbd {
+  font-size: 10px;
+}
+
+/* ── Key-binding Rows ────────────────────────────────────────────────────────── */
+.key-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.key-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.key-action {
+  font-size: 13px;
+  color: rgba(180, 220, 255, 0.85);
+  flex: 1;
+}
+
+.key-btn {
+  min-width: 90px;
+  padding: 7px 14px;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 13px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  color: #a0d8ff;
+  background: rgba(100, 180, 255, 0.07);
+  border: 1px solid rgba(100, 180, 255, 0.35);
+  border-radius: 5px;
+  cursor: pointer;
+  text-align: center;
+  transition: background 0.15s, border-color 0.15s, color 0.15s, box-shadow 0.15s;
+}
+
+.key-btn:hover {
+  background: rgba(100, 180, 255, 0.16);
+  border-color: rgba(150, 220, 255, 0.7);
+  color: #fff;
+}
+
+.key-btn.listening {
+  color: #ffe060;
+  border-color: #ffe060;
+  background: rgba(255, 220, 60, 0.1);
+  box-shadow: 0 0 12px rgba(255, 220, 60, 0.35);
+  animation: pulse-btn 0.7s ease-in-out infinite alternate;
+}
+
+@keyframes pulse-btn {
+  from { box-shadow: 0 0 8px  rgba(255, 220, 60, 0.25); }
+  to   { box-shadow: 0 0 20px rgba(255, 220, 60, 0.60); }
+}
+
+/* ── Settings Footer ─────────────────────────────────────────────────────────── */
+#settings-footer {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+}
+
+#settings-reset {
+  padding: 9px 18px;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 12px;
+  letter-spacing: 2px;
+  color: rgba(255, 140, 140, 0.85);
+  background: transparent;
+  border: 1px solid rgba(255, 100, 100, 0.35);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
+}
+
+#settings-reset:hover {
+  background: rgba(255, 80, 80, 0.12);
+  border-color: rgba(255, 120, 120, 0.7);
+  color: #ffaaaa;
+}
+
+#settings-close {
+  padding: 9px 22px;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 12px;
+  letter-spacing: 2px;
+  color: #a0d8ff;
+  background: transparent;
+  border: 1px solid rgba(100, 180, 255, 0.4);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
+}
+
+#settings-close:hover {
+  background: rgba(100, 180, 255, 0.12);
+  border-color: rgba(150, 220, 255, 0.8);
+  color: #fff;
+}

@@ -1,12 +1,6 @@
 # Lunar Lander
 
-A minimalist browser-based Lunar Lander game built with pure **HTML5, CSS3, and vanilla JavaScript** — no frameworks, no dependencies.
-
-## Live Gameplay
-
-Open `index.html` directly in any modern browser to play. No build step or server required.
-
----
+A minimalist browser-based Lunar Lander game built with pure **HTML5, CSS3, and vanilla JavaScript** using **ES Modules** — no frameworks, no bundler, no dependencies.
 
 ## Controls
 
@@ -77,23 +71,11 @@ Each successful landing increases gravity strength and the ship's initial horizo
 
 ---
 
-## Project Structure
+## The link
 
 ```
-Lunar-Lander/
-├── index.html   ← Game shell, HUD elements, overlay screens
-├── style.css    ← Dark space theme, HUD styling, overlay/button styles
-├── game.js      ← All game logic: physics, rendering, input, particles
-└── README.md    ← This file
+https://stefanovitch-ilann-24019037.github.io/Lunar-Lander/
 ```
-
----
-
-## Browser Compatibility
-
-Works in any browser supporting the **HTML5 Canvas API** (Chrome, Firefox, Edge, Safari — all modern versions).
-
----
 
 ## Possible Extensions
 

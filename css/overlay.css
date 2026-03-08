@@ -1,0 +1,104 @@
+/* ── Overlay Backdrop ────────────────────────────────────────────────────────── */
+#overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 5, 16, 0.82);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  backdrop-filter: blur(3px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s ease;
+  z-index: 20;
+}
+
+#overlay.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+/* ── Overlay Content ─────────────────────────────────────────────────────────── */
+#overlay-content {
+  text-align: center;
+  color: #c8e6ff;
+  max-width: 420px;
+  padding: 20px;
+}
+
+#overlay-title {
+  font-size: 42px;
+  letter-spacing: 8px;
+  color: #ffffff;
+  text-shadow: 0 0 24px rgba(100, 200, 255, 0.9), 0 0 60px rgba(100, 180, 255, 0.4);
+  margin-bottom: 18px;
+}
+
+#overlay-title.crash {
+  color: #ff4f4f;
+  text-shadow: 0 0 24px rgba(255, 80, 60, 0.9), 0 0 60px rgba(255, 60, 40, 0.4);
+}
+
+#overlay-title.win {
+  color: #50ffb0;
+  text-shadow: 0 0 24px rgba(50, 255, 150, 0.9), 0 0 60px rgba(40, 220, 120, 0.4);
+}
+
+#overlay-message {
+  font-size: 14px;
+  line-height: 1.7;
+  color: rgba(180, 220, 255, 0.85);
+  margin-bottom: 16px;
+}
+
+/* ── Post-run Stats Box ──────────────────────────────────────────────────────── */
+#overlay-stats {
+  background: rgba(100, 180, 255, 0.06);
+  border: 1px solid rgba(100, 180, 255, 0.18);
+  border-radius: 6px;
+  padding: 14px 20px;
+  margin-bottom: 16px;
+  font-size: 13px;
+  line-height: 1.9;
+  color: #a0d8ff;
+}
+
+#overlay-stats.hidden {
+  display: none;
+}
+
+/* ── Controls Hint ───────────────────────────────────────────────────────────── */
+#controls-hint {
+  margin-bottom: 22px;
+  font-size: 12px;
+  color: rgba(160, 210, 255, 0.6);
+  line-height: 1.8;
+}
+
+/* ── Launch / Restart Button ─────────────────────────────────────────────────── */
+#action-btn {
+  display: inline-block;
+  padding: 12px 40px;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 14px;
+  font-weight: bold;
+  letter-spacing: 4px;
+  color: #fff;
+  background: transparent;
+  border: 2px solid rgba(100, 200, 255, 0.7);
+  border-radius: 4px;
+  cursor: pointer;
+  text-transform: uppercase;
+  box-shadow: 0 0 18px rgba(100, 200, 255, 0.2), inset 0 0 18px rgba(100, 200, 255, 0.04);
+  transition: background 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+#action-btn:hover {
+  background: rgba(100, 200, 255, 0.12);
+  border-color: rgba(150, 220, 255, 1);
+  box-shadow: 0 0 28px rgba(100, 200, 255, 0.5), inset 0 0 18px rgba(100, 200, 255, 0.08);
+}
+
+#action-btn:active {
+  transform: scale(0.97);
+}

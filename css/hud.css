@@ -1,0 +1,43 @@
+/* ── HUD Container ───────────────────────────────────────────────────────────── */
+#hud {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  display: flex;
+  gap: 24px;
+  pointer-events: none;
+  user-select: none;
+}
+
+.hud-item {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+}
+
+.hud-label {
+  font-size: 9px;
+  letter-spacing: 2px;
+  color: rgba(100, 180, 255, 0.55);
+  text-transform: uppercase;
+}
+
+/* ── HUD Values ──────────────────────────────────────────────────────────────── */
+.hud-value {
+  font-size: 14px;
+  font-weight: bold;
+  color: #a0d8ff;
+  text-shadow: 0 0 6px rgba(100, 200, 255, 0.7);
+  min-width: 70px;
+}
+
+.hud-value.warning {
+  color: #ffcc00;
+  text-shadow: 0 0 6px rgba(255, 200, 0, 0.7);
+}
+
+.hud-value.danger {
+  color: #ff4f4f;
+  text-shadow: 0 0 8px rgba(255, 80, 80, 0.8);
+}
