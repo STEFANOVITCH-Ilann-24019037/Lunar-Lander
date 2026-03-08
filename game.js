@@ -24,6 +24,49 @@ const overlayStats  = document.getElementById('overlay-stats');
 const controlsHint  = document.getElementById('controls-hint');
 const actionBtn     = document.getElementById('action-btn');
 
+// ── Settings Elements ─────────────────────────────────────────────────────────
+const settingsBtn   = document.getElementById('settings-btn');
+const settingsModal = document.getElementById('settings-modal');
+const settingsClose = document.getElementById('settings-close');
+const settingsReset = document.getElementById('settings-reset');
+const keyBtns       = document.querySelectorAll('.key-btn');
+
+// ── Key Bindings ─────────────────────────────────────────────────────────────
+const DEFAULT_BINDINGS = { up: 'ArrowUp', down: 'ArrowDown', left: 'ArrowLeft', right: 'ArrowRight' };
+
+function loadBindings() {
+  try {
+    const saved = JSON.parse(localStorage.getItem('lunar_bindings'));
+    if (saved && saved.up && saved.down && saved.left && saved.right) return saved;
+  } catch (_) {}
+  return { ...DEFAULT_BINDINGS };
+}
+
+function saveBindings() {
+  localStorage.setItem('lunar_bindings', JSON.stringify(bindings));
+}
+
+/** Returns a short human-readable label for a KeyboardEvent.code value */
+function formatKey(code) {
+  const labels = {
+    ArrowUp: '↑', ArrowDown: '↓', ArrowLeft: '←', ArrowRight: '→',
+    Space: 'ESPACE', Enter: 'ENTRÉE', Escape: 'ÉCHAP',
+    ShiftLeft: 'SHIFT G', ShiftRight: 'SHIFT D',
+    ControlLeft: 'CTRL G', ControlRight: 'CTRL D',
+    AltLeft: 'ALT G', AltRight: 'ALT D',
+    Tab: 'TAB', Backspace: 'RETOUR',
+  };
+  if (labels[code]) return labels[code];
+  if (code.startsWith('Key'))   return code.slice(3);
+  if (code.startsWith('Digit')) return code.slice(5);
+  if (code.startsWith('Numpad')) return 'NP' + code.slice(6);
+  return code;
+}
+
+let bindings     = loadBindings();
+let settingsOpen = false;
+let listeningFor = null;  // action key currently waiting for a new binding
+
 // ── Constants ─────────────────────────────────────────────────────────────────
 const GRAVITY           = 0.04;   // pixels/frame² downward
 const THRUST_POWER      = 0.10;   // main thruster acceleration
@@ -595,23 +638,103 @@ function gameLoop() {
 
 // ── Input Handling ────────────────────────────────────────────────────────────
 document.addEventListener('keydown', e => {
-  if (state !== 'playing') return;
-  switch (e.code) {
-    case 'ArrowUp':    keys.up    = true; e.preventDefault(); break;
-    case 'ArrowDown':  keys.down  = true; e.preventDefault(); break;
-    case 'ArrowLeft':  keys.left  = true; e.preventDefault(); break;
-    case 'ArrowRight': keys.right = true; e.preventDefault(); break;
+  // --- Key-capture mode (rebinding) ---
+  if (listeningFor) {
+    e.preventDefault();
+    if (e.code !== 'Escape') {
+      bindings[listeningFor] = e.code;
+      saveBindings();
+      updateControlsHint();
+    }
+    stopListening();
+    return;
   }
+
+  // --- Toggle settings panel with Escape ---
+  if (e.code === 'Escape') {
+    toggleSettings();
+    return;
+  }
+
+  if (state !== 'playing' || settingsOpen) return;
+
+  if (e.code === bindings.up)    { keys.up    = true; e.preventDefault(); }
+  if (e.code === bindings.down)  { keys.down  = true; e.preventDefault(); }
+  if (e.code === bindings.left)  { keys.left  = true; e.preventDefault(); }
+  if (e.code === bindings.right) { keys.right = true; e.preventDefault(); }
 });
 
 document.addEventListener('keyup', e => {
-  switch (e.code) {
-    case 'ArrowUp':    keys.up    = false; break;
-    case 'ArrowDown':  keys.down  = false; break;
-    case 'ArrowLeft':  keys.left  = false; break;
-    case 'ArrowRight': keys.right = false; break;
-  }
+  if (e.code === bindings.up)    keys.up    = false;
+  if (e.code === bindings.down)  keys.down  = false;
+  if (e.code === bindings.left)  keys.left  = false;
+  if (e.code === bindings.right) keys.right = false;
 });
+
+// ── Settings Logic ─────────────────────────────────────────────────────────────
+function refreshKeyButtons() {
+  keyBtns.forEach(btn => {
+    const action = btn.dataset.action;
+    btn.textContent = formatKey(bindings[action]);
+    btn.classList.remove('listening');
+  });
+}
+
+function stopListening() {
+  listeningFor = null;
+  refreshKeyButtons();
+}
+
+function openSettings() {
+  settingsOpen = true;
+  listeningFor = null;
+  // Release all held keys so nothing stays pressed when focus shifts
+  if (keys) keys = { up: false, left: false, right: false, down: false };
+  refreshKeyButtons();
+  settingsModal.classList.add('active');
+}
+
+function closeSettings() {
+  listeningFor = null;
+  refreshKeyButtons();
+  settingsModal.classList.remove('active');
+  settingsOpen = false;
+}
+
+function toggleSettings() {
+  if (settingsOpen) closeSettings(); else openSettings();
+}
+
+settingsBtn.addEventListener('click', toggleSettings);
+
+settingsClose.addEventListener('click', closeSettings);
+
+settingsReset.addEventListener('click', () => {
+  bindings = { ...DEFAULT_BINDINGS };
+  saveBindings();
+  updateControlsHint();
+  refreshKeyButtons();
+});
+
+keyBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    // If another button was already listening, cancel it first
+    stopListening();
+    listeningFor = btn.dataset.action;
+    btn.textContent = '…';
+    btn.classList.add('listening');
+  });
+});
+
+// ── Controls Hint ──────────────────────────────────────────────────────────────
+function updateControlsHint() {
+  controlsHint.innerHTML =
+    `<p><kbd>${formatKey(bindings.up)}</kbd> Propulseur &nbsp; ` +
+    `<kbd>${formatKey(bindings.left)}</kbd><kbd>${formatKey(bindings.right)}</kbd> Rotation</p>` +
+    `<p><kbd>${formatKey(bindings.down)}</kbd> Rétro-fusée (frein d'urgence)</p>` +
+    `<p style="color:rgba(160,210,255,0.35);font-size:10px;margin-top:8px">` +
+    `<kbd>Échap</kbd> Ouvrir les paramètres</p>`;
+}
 
 // ── Button Action ─────────────────────────────────────────────────────────────
 actionBtn.addEventListener('click', () => {
@@ -627,4 +750,6 @@ actionBtn.addEventListener('click', () => {
 state = 'menu';
 keys  = { up: false, left: false, right: false, down: false };
 resetGame(); // pre-generate terrain so it's visible behind the menu
+updateControlsHint();
+refreshKeyButtons();
 gameLoop();

@@ -43,11 +43,44 @@
           Land gently to survive!
         </p>
         <div id="overlay-stats" class="hidden"></div>
-        <div id="controls-hint">
-          <p><kbd>↑</kbd> Main thruster &nbsp; <kbd>←</kbd><kbd>→</kbd> Rotate</p>
-          <p><kbd>↓</kbd> Retro-burn (emergency brake)</p>
-        </div>
+        <div id="controls-hint"></div>
         <button id="action-btn">LAUNCH</button>
+      </div>
+    </div>
+
+    <!-- Settings button (always visible top-right) -->
+    <button id="settings-btn" title="Paramètres (Échap)">⚙</button>
+
+    <!-- Settings modal -->
+    <div id="settings-modal">
+      <div id="settings-panel">
+        <h2>PARAMÈTRES</h2>
+        <p class="settings-subtitle">
+          Cliquez sur un bouton, puis appuyez sur la touche souhaitée.<br/>
+          Appuyez sur <kbd>Échap</kbd> pour annuler.
+        </p>
+        <div class="key-rows">
+          <div class="key-row">
+            <span class="key-action">Propulseur principal</span>
+            <button class="key-btn" data-action="up"></button>
+          </div>
+          <div class="key-row">
+            <span class="key-action">Rétro-fusée</span>
+            <button class="key-btn" data-action="down"></button>
+          </div>
+          <div class="key-row">
+            <span class="key-action">Rotation gauche</span>
+            <button class="key-btn" data-action="left"></button>
+          </div>
+          <div class="key-row">
+            <span class="key-action">Rotation droite</span>
+            <button class="key-btn" data-action="right"></button>
+          </div>
+        </div>
+        <div id="settings-footer">
+          <button id="settings-reset">RÉINITIALISER</button>
+          <button id="settings-close">FERMER</button>
+        </div>
       </div>
     </div>
   </div>
